@@ -31,7 +31,7 @@ export default function MerciPage() {
 
             <Link
               href="/"
-              className="inline-flex items-center gap-xs font-body text-sm text-slate hover:text-primary-dark transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-sm self-start"
+              className="inline-flex items-center gap-xs font-body font-semibold text-[0.9375rem] text-slate hover:text-primary-dark transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-sm self-start"
             >
               <ChevronLeft size={16} aria-hidden="true" />
               Retour à l&apos;accueil

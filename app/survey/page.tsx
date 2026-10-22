@@ -114,7 +114,7 @@ export default function SurveyPage() {
 
         <header className="flex flex-col gap-xs">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-couleur.png" alt="Synelia" className="h-8 w-auto self-start" />
+          <img src="/logo-couleur.png" alt="Synelia" className="h-10 w-auto self-start" />
           <h1 className="font-display font-bold text-primary-dark" style={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)', lineHeight: 1.2 }}>
             Enquête de satisfaction
           </h1>
@@ -274,7 +274,7 @@ export default function SurveyPage() {
                   onClick={() => navigate(step - 1)}
                   disabled={transitioning}
                   className={cn(
-                    'flex items-center gap-xs font-body text-sm text-slate',
+                    'flex items-center gap-xs font-body font-semibold text-[0.9375rem] text-slate',
                     'hover:text-primary-dark transition-colors duration-150',
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-sm',
                     'disabled:opacity-40 disabled:cursor-not-allowed',

@@ -40,7 +40,7 @@ export function RatingScale({ value, onChange, className }: RatingScaleProps) {
             <span className={cn('font-display font-bold text-[1.75rem] leading-none', selected ? 'text-primary-dark' : 'text-slate')}>
               {score}
             </span>
-            <span className="text-[0.625rem] text-gray-text text-center leading-tight mt-xs px-xs">
+            <span className="text-[0.6875rem] text-gray-text text-center leading-tight mt-xs px-xs">
               {label}
             </span>
           </button>

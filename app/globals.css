@@ -9,4 +9,8 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-display font-bold text-primary-dark;
   }
+  ::selection {
+    background-color: #E3F7F6;
+    color: #1C1B2E;
+  }
 }
