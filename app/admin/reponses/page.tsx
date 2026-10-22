@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { Suspense } from 'react'
 import { auth } from '@/lib/auth'
 import { getResponses } from '@/lib/queries/admin'
 import { ResponsesTable } from '@/components/admin/ResponsesTable'
@@ -50,11 +51,13 @@ export default async function ReponsesPage({ searchParams }: PageProps) {
         </div>
       </div>
 
-      <ResponsesTable
-        initialData={data}
-        initialTotal={total}
-        pageSize={PAGE_SIZE}
-      />
+      <Suspense>
+        <ResponsesTable
+          initialData={data}
+          initialTotal={total}
+          pageSize={PAGE_SIZE}
+        />
+      </Suspense>
     </main>
   )
 }

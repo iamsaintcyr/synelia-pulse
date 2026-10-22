@@ -28,6 +28,9 @@ export async function GET(req: Request) {
       totalPages: Math.ceil(total / limit),
     })
   } catch (err) {
+    if (err instanceof Error && err.message === 'SMALL_GROUP') {
+      return NextResponse.json({ error: 'filter_too_narrow' }, { status: 422 })
+    }
     console.error('[admin/reponses]', (err as Error).message)
     return NextResponse.json({ error: 'server_error' }, { status: 500 })
   }

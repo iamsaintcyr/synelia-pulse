@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
+import { useSearchParams } from 'next/navigation'
 import {
   useReactTable, getCoreRowModel, flexRender,
   createColumnHelper,
@@ -83,18 +84,28 @@ export function ResponsesTable({ initialData, initialTotal, pageSize }: Props) {
   const [page,     setPage]     = useState(1)
   const [loading,  setLoading]  = useState(false)
   const [selected, setSelected] = useState<ResponseRow | null>(null)
+  const searchParams = useSearchParams()
 
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
 
-  async function goToPage(next: number) {
+  const goToPage = useCallback(async (next: number) => {
     setLoading(true)
-    const res  = await fetch(`/api/admin/reponses?page=${next}&limit=${pageSize}`)
+    const params = new URLSearchParams()
+    params.set('page', String(next))
+    params.set('limit', String(pageSize))
+    const from = searchParams.get('from')
+    const to   = searchParams.get('to')
+    const wc   = searchParams.get('workContext')
+    if (from) params.set('from', from)
+    if (to)   params.set('to', to)
+    if (wc)   params.set('workContext', wc)
+    const res  = await fetch(`/api/admin/reponses?${params.toString()}`)
     const json = await res.json()
-    setData(json.data)
-    setTotal(json.total)
+    setData(json.data ?? [])
+    setTotal(json.total ?? 0)
     setPage(next)
     setLoading(false)
-  }
+  }, [pageSize, searchParams])
 
   const table = useReactTable({
     data,

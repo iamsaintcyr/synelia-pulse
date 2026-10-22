@@ -137,6 +137,10 @@ export async function getResponses(
 
   const total = Number(totalResult[0]?.count ?? 0)
 
+  if (rest.workContext && total < 5) {
+    throw new Error('SMALL_GROUP')
+  }
+
   const data: ResponseRow[] = rows.map(r => ({
     id:                r.id,
     submittedAt:       r.submittedAt.toISOString(),
