@@ -16,6 +16,7 @@ export type SummaryResponse = {
   improvementsCounts:       Record<string, number>
   aiPerceptionCounts:       Record<string, number>
   responsesByDay:           Array<{ date: string; count: number }>
+  lastResponseAt:           string | null
 }
 
 export type ResponseRow = {
@@ -105,6 +106,10 @@ export async function getSummary(filters: AdminFilters): Promise<SummaryResponse
     .map(([date, count]) => ({ date, count }))
     .sort((a, b) => a.date.localeCompare(b.date))
 
+  const lastResponseAt = rows.length > 0
+    ? rows.reduce((latest, r) => r.submittedAt > latest ? r.submittedAt : latest, rows[0].submittedAt).toISOString()
+    : null
+
   return {
     totalResponses,
     averageSatisfaction,
@@ -113,6 +118,7 @@ export async function getSummary(filters: AdminFilters): Promise<SummaryResponse
     improvementsCounts,
     aiPerceptionCounts,
     responsesByDay,
+    lastResponseAt,
   }
 }
 
