@@ -1,0 +1,17 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - img "Synelia" [ref=e5]
+        - heading "Votre avis compte" [level=1] [ref=e6]
+      - paragraph [ref=e7]: Dans une démarche d'amélioration continue, le Pôle Développement souhaite recueillir vos retours sur votre expérience, les difficultés que vous rencontrez et les améliorations que vous aimeriez voir mises en place.
+      - paragraph [ref=e8]: Que vous travailliez au siège, en régie chez un client ou à distance, votre contribution est importante.
+      - generic [ref=e12]:
+        - paragraph [ref=e13]: Ce questionnaire est anonyme.
+        - paragraph [ref=e14]: Ne renseignez pas votre nom, votre adresse e-mail, le nom d'un client ni aucune information permettant de vous identifier ou d'identifier une autre personne. Vos réponses seront analysées de manière collective afin de définir des actions d'amélioration concrètes.
+      - generic [ref=e15]:
+        - link "Donner mon avis" [ref=e16] [cursor=pointer]:
+          - /url: /survey
+        - paragraph [ref=e17]: "Temps estimé : 3 minutes. Les réponses sont facultatives, sauf si une question est explicitement rendue obligatoire."
+  - button "Open Next.js Dev Tools" [ref=e23] [cursor=pointer]
+  - alert [ref=e27]

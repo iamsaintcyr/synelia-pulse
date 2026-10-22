@@ -1,0 +1,20 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - text: Synelia
+        - heading "Enquête de satisfaction" [level=1] [ref=e5]
+      - generic [ref=e7]:
+        - progressbar "Étape 7 sur 7" [ref=e169]
+        - generic [ref=e9]: Étape 7 sur 7
+        - generic [ref=e171]:
+          - generic [ref=e172]: Souhaitez-vous ajouter un autre commentaire ou une suggestion ?
+          - paragraph [ref=e173]: Cette question est facultative.
+          - generic [ref=e174]:
+            - textbox [ref=e175]
+            - generic [ref=e176]: 0/2000
+        - generic [ref=e36]:
+          - button "Précédent" [ref=e57] [cursor=pointer]
+          - button "Envoyer mes réponses" [ref=e177] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e65] [cursor=pointer]
+  - alert [ref=e69]

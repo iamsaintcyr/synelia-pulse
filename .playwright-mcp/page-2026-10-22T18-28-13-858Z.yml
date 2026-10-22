@@ -1,0 +1,46 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - text: Synelia
+        - heading "Enquête de satisfaction" [level=1] [ref=e5]
+      - generic [ref=e7]:
+        - progressbar "Étape 4 sur 7" [ref=e105]
+        - generic [ref=e9]: Étape 4 sur 7
+        - group "Quelles améliorations seraient les plus utiles pour vous ?" [ref=e107]:
+          - generic [ref=e109]:
+            - generic [ref=e110] [cursor=pointer]:
+              - checkbox "Meilleur accompagnement technique" [ref=e111]
+              - generic [ref=e112]: Meilleur accompagnement technique
+            - generic [ref=e113] [cursor=pointer]:
+              - checkbox "Partage de connaissances entre développeurs" [ref=e114]
+              - generic [ref=e115]: Partage de connaissances entre développeurs
+            - generic [ref=e116] [cursor=pointer]:
+              - checkbox "Formations et certifications" [ref=e117]
+              - generic [ref=e118]: Formations et certifications
+            - generic [ref=e119] [cursor=pointer]:
+              - checkbox "Meilleure organisation et clarification des priorités" [ref=e120]
+              - generic [ref=e121]: Meilleure organisation et clarification des priorités
+            - generic [ref=e122] [cursor=pointer]:
+              - checkbox "Meilleure visibilité sur les missions et opportunités de projets" [ref=e123]
+              - generic [ref=e124]: Meilleure visibilité sur les missions et opportunités de projets
+            - generic [ref=e125] [cursor=pointer]:
+              - checkbox "Amélioration des outils et des environnements de développement" [ref=e126]
+              - generic [ref=e127]: Amélioration des outils et des environnements de développement
+            - generic [ref=e128] [cursor=pointer]:
+              - checkbox "Meilleure reconnaissance du travail accompli" [ref=e129]
+              - generic [ref=e130]: Meilleure reconnaissance du travail accompli
+            - generic [ref=e131] [cursor=pointer]:
+              - checkbox "Davantage d'échanges entre les équipes du siège et celles en régie" [ref=e132]
+              - generic [ref=e133]: Davantage d'échanges entre les équipes du siège et celles en régie
+            - generic [ref=e134] [cursor=pointer]:
+              - checkbox "Meilleur accompagnement de carrière" [ref=e135]
+              - generic [ref=e136]: Meilleur accompagnement de carrière
+            - generic [ref=e137] [cursor=pointer]:
+              - checkbox "Autre" [ref=e138]
+              - generic [ref=e139]: Autre
+        - generic [ref=e36]:
+          - button "Précédent" [ref=e57] [cursor=pointer]
+          - button "Suivant" [ref=e37] [cursor=pointer]
+  - button "Open Next.js Dev Tools" [ref=e65] [cursor=pointer]
+  - alert [ref=e69]

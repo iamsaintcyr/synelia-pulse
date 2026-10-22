@@ -1,0 +1,28 @@
+- main [ref=f6e2]:
+  - generic [ref=f6e3]:
+    - generic [ref=f6e4]:
+      - img "Synelia" [ref=f6e5]
+      - heading "Enquête de satisfaction" [level=1] [ref=f6e6]
+    - generic [ref=f6e8]:
+      - progressbar "Étape 1 sur 7" [ref=f6e9]
+      - generic [ref=f6e10]: Étape 1 sur 7
+      - generic [ref=f6e14]:
+        - generic [ref=f6e15]: Ce questionnaire est anonyme. Ne renseignez pas votre nom, votre adresse e-mail, le nom d'un client ni aucune information permettant de vous identifier.
+        - group "Dans quel contexte travaillez-vous principalement ?" [ref=f6e19]:
+          - radiogroup [ref=f6e21]:
+            - generic [ref=f6e22] [cursor=pointer]:
+              - radio "Au siège" [ref=f6e23]
+              - generic [ref=f6e24]: Au siège
+            - generic [ref=f6e25] [cursor=pointer]:
+              - radio "En régie chez un client" [ref=f6e26]
+              - generic [ref=f6e27]: En régie chez un client
+            - generic [ref=f6e28] [cursor=pointer]:
+              - radio "En télétravail" [ref=f6e29]
+              - generic [ref=f6e30]: En télétravail
+            - generic [ref=f6e31] [cursor=pointer]:
+              - radio "Autre" [ref=f6e32]
+              - generic [ref=f6e33]: Autre
+            - generic [ref=f6e34] [cursor=pointer]:
+              - radio "Je préfère ne pas répondre" [ref=f6e35]
+              - generic [ref=f6e36]: Je préfère ne pas répondre
+      - button "Suivant" [ref=f6e38] [cursor=pointer]

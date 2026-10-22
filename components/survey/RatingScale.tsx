@@ -37,7 +37,7 @@ export function RatingScale({ value, onChange, className }: RatingScaleProps) {
                 : 'bg-white border-border hover:bg-primary-mist',
             )}
           >
-            <span className="font-display font-bold text-[1.75rem] leading-none text-ink">
+            <span className={cn('font-display font-bold text-[1.75rem] leading-none', selected ? 'text-primary-dark' : 'text-slate')}>
               {score}
             </span>
             <span className="text-[0.625rem] text-gray-text text-center leading-tight mt-xs px-xs">

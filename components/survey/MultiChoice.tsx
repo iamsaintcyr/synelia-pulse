@@ -38,7 +38,7 @@ export function MultiChoice({
 
   return (
     <fieldset className={cn('flex flex-col gap-sm', className)}>
-      <legend className="font-display font-bold text-ink text-base mb-sm">{label}</legend>
+      <legend className="font-display font-bold text-primary-dark mb-sm" style={{ fontSize: '1.125rem', lineHeight: 1.25 }}>{label}</legend>
       <div className="flex flex-col gap-sm">
         {options.map((opt) => {
           const id = `${name}-${opt.value}`
