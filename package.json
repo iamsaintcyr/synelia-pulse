@@ -30,6 +30,9 @@
     "@tanstack/react-table": "^8.20.0",
     "date-fns": "^4.1.0"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "unrs-resolver"]
+  },
   "devDependencies": {
     "typescript": "^5.6.0",
     "@types/node": "^22.0.0",
