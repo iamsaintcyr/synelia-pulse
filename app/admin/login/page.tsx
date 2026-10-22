@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { signIn } from 'next-auth/react'
 import { Button } from '@/components/ui/Button'
 import { Input, FormField } from '@/components/ui/Input'
@@ -36,14 +37,19 @@ export default function LoginPage() {
     <main className="min-h-screen bg-gray-light flex items-center justify-center px-md">
       <div className="w-full max-w-[400px] flex flex-col gap-xl">
 
-        <header className="text-center">
-          <span className="font-display font-bold text-primary text-sm tracking-widest uppercase">
-            Synelia
-          </span>
-          <h1 className="font-display font-bold text-primary-dark text-2xl mt-sm">
+        <header className="text-center flex flex-col items-center gap-sm">
+          <Image
+            src="/logo-couleur.png"
+            alt="Synelia"
+            width={140}
+            height={42}
+            className="h-9 w-auto"
+            priority
+          />
+          <h1 className="font-display font-bold text-primary-dark text-2xl">
             Connexion
           </h1>
-          <p className="text-gray-text text-sm mt-xs">Administration — Pôle Développement</p>
+          <p className="text-gray-text text-sm">Administration — Pôle Développement</p>
         </header>
 
         <Card>

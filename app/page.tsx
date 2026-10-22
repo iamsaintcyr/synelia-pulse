@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { Callout } from '@/components/ui/Callout'
 
@@ -6,10 +7,15 @@ export default function HomePage() {
     <main className="min-h-screen bg-gray-light py-3xl px-md">
       <div className="max-w-[720px] mx-auto flex flex-col gap-2xl">
 
-        <header className="flex flex-col gap-sm">
-          <span className="font-display font-bold text-primary text-sm tracking-widest uppercase">
-            Synelia
-          </span>
+        <header className="flex flex-col gap-md">
+          <Image
+            src="/logo-couleur.png"
+            alt="Synelia"
+            width={160}
+            height={48}
+            className="h-10 w-auto"
+            priority
+          />
           <h1 className="font-display font-bold text-primary-dark text-4xl leading-tight">
             Votre avis compte
           </h1>

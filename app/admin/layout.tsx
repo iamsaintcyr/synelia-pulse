@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { auth, signOut } from '@/lib/auth'
+import Image from 'next/image'
 import Link from 'next/link'
 import { LayoutDashboard, List, LogOut } from 'lucide-react'
 
@@ -16,11 +17,16 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     <div className="min-h-screen flex">
       {/* Sidebar */}
       <aside className="w-64 bg-primary-night flex flex-col shrink-0">
-        <div className="px-lg py-xl">
-          <span className="font-display font-bold text-white text-sm tracking-widest uppercase opacity-70">
-            Synelia
-          </span>
-          <p className="font-display font-bold text-white text-lg mt-xs leading-tight">
+        <div className="px-lg py-xl flex flex-col gap-sm">
+          <Image
+            src="/logo-blanc.png"
+            alt="Synelia"
+            width={130}
+            height={38}
+            className="h-8 w-auto"
+            priority
+          />
+          <p className="font-display font-bold text-white/70 text-sm leading-tight">
             Pôle Développement
           </p>
         </div>
