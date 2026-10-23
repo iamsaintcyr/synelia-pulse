@@ -60,12 +60,44 @@ const AI_USAGE_OPTIONS = [
   { value: 'non',         label: 'Non, je n\'utilise pas d\'outils IA au travail' },
 ]
 
+const AI_MODE_OPTIONS = [
+  { value: 'chat_web',           label: 'Chat web uniquement (Claude.ai, ChatGPT, Gemini…)' },
+  { value: 'suggestion_ide',     label: 'Suggestions en temps réel dans l\'IDE (Copilot, Cursor…)' },
+  { value: 'agent_assiste',      label: 'Coding agent assisté — je valide chaque action' },
+  { value: 'agent_full_control', label: 'Coding agent en full control — exécution autonome' },
+  { value: 'doc_redaction',      label: 'Génération de documentation / rédaction' },
+  { value: 'debug_review',       label: 'Débogage et revue de code' },
+  { value: 'autre',              label: 'Autre' },
+]
+
+const AI_TOOL_OPTIONS = [
+  { value: 'claude',   label: 'Claude (Anthropic)' },
+  { value: 'copilot',  label: 'GitHub Copilot' },
+  { value: 'cursor',   label: 'Cursor' },
+  { value: 'codex',    label: 'OpenAI / Codex' },
+  { value: 'opencode', label: 'OpenCode' },
+  { value: 'gemini',   label: 'Gemini (Google)' },
+  { value: 'mistral',  label: 'Mistral' },
+  { value: 'autre',    label: 'Autre' },
+]
+
 const AI_PERCEPTION_OPTIONS = [
-  { value: 'opportunite',         label: 'Je la considère comme une opportunité pour ma productivité.' },
+  { value: 'opportunite',         label: 'Je la vois comme une opportunité pour ma productivité.' },
   { value: 'formation_souhaitee', label: "J'aimerais être davantage formé(e) à ces outils." },
   { value: 'interrogation',       label: "Je m'interroge sur son impact sur mon métier." },
   { value: 'preoccupation',       label: 'Je suis préoccupé(e) par certains risques ou limites.' },
   { value: 'pas_avis',            label: "Je n'ai pas encore d'avis." },
+]
+
+const AI_BLOCKER_OPTIONS = [
+  { value: 'qualite_code',           label: 'Qualité et fiabilité du code généré' },
+  { value: 'securite',               label: 'Sécurité et confidentialité des données' },
+  { value: 'dependance',             label: 'Risque de dépendance ou perte de compétences' },
+  { value: 'prise_en_main',          label: 'Difficulté à prendre en main les outils' },
+  { value: 'manque_formation',       label: 'Manque de formation ou d\'accompagnement' },
+  { value: 'emploi',                 label: 'Préoccupations sur l\'impact sur l\'emploi' },
+  { value: 'resultats_insuffisants', label: 'Résultats insuffisants sur mes tâches réelles' },
+  { value: 'aucune',                 label: 'Aucune appréhension particulière' },
 ]
 
 const RETENTION_INTENT_OPTIONS = [
@@ -77,7 +109,7 @@ const RETENTION_INTENT_OPTIONS = [
 
 type FormState = FeedbackPayload & { obstacleOther: string; improvementOther: string }
 
-const TOTAL_STEPS = 8
+const TOTAL_STEPS = 9
 
 export default function SurveyPage() {
   const router = useRouter()
@@ -127,10 +159,9 @@ export default function SurveyPage() {
 
   const isLast = step === TOTAL_STEPS
   const progress = Math.round((step / TOTAL_STEPS) * 100)
+  const usesAi = form.aiUsage === 'regulier' || form.aiUsage === 'occasionnel'
 
-  // Obstacles sélectionnés (hors "aucun") pour la question du principal obstacle
-  const selectableObstacles = (form.obstacles ?? [])
-    .filter(v => v !== 'aucun' && v !== 'autre')
+  const selectableObstacles = (form.obstacles ?? []).filter(v => v !== 'aucun' && v !== 'autre')
   const showMainObstacle = selectableObstacles.length >= 2
 
   return (
@@ -148,7 +179,6 @@ export default function SurveyPage() {
         <form onSubmit={handleSubmit} noValidate>
           <div className="bg-white rounded-lg shadow-sm border border-border overflow-hidden">
 
-            {/* Progress bar */}
             <div className="h-[3px] bg-gray-light" role="none">
               <div
                 className="h-full bg-accent transition-all duration-300 ease-out"
@@ -161,7 +191,6 @@ export default function SurveyPage() {
               />
             </div>
 
-            {/* Step counter */}
             <div className="px-lg pt-md">
               <span className="font-body text-[0.75rem] leading-[1.4] text-gray-text" aria-hidden="true">
                 <span className="hidden sm:inline">Étape {step} sur {TOTAL_STEPS}</span>
@@ -169,14 +198,9 @@ export default function SurveyPage() {
               </span>
             </div>
 
-            {/* Step content */}
-            <div
-              className={cn(
-                'px-lg pt-md pb-lg transition-opacity duration-[160ms] ease-out',
-                visible ? 'opacity-100' : 'opacity-0',
-              )}
-            >
-              {/* 1 — Contexte de travail */}
+            <div className={cn('px-lg pt-md pb-lg transition-opacity duration-[160ms] ease-out', visible ? 'opacity-100' : 'opacity-0')}>
+
+              {/* 1 — Contexte */}
               {step === 1 && (
                 <div className="flex flex-col gap-lg">
                   <Callout variant="info">
@@ -194,17 +218,14 @@ export default function SurveyPage() {
                 </div>
               )}
 
-              {/* 2 — Satisfaction globale + tendance */}
+              {/* 2 — Satisfaction + tendance */}
               {step === 2 && (
                 <div className="flex flex-col gap-xl">
                   <div className="flex flex-col gap-md">
                     <p className="font-display font-bold text-primary-dark" style={{ fontSize: '1.125rem', lineHeight: 1.25 }}>
                       Globalement, comment évaluez-vous votre expérience actuelle au sein du Pôle Développement ?
                     </p>
-                    <RatingScale
-                      value={form.satisfactionScore ?? null}
-                      onChange={(v) => set('satisfactionScore', v)}
-                    />
+                    <RatingScale value={form.satisfactionScore ?? null} onChange={(v) => set('satisfactionScore', v)} />
                   </div>
                   <SingleChoice
                     name="satisfactionTrend"
@@ -226,29 +247,18 @@ export default function SurveyPage() {
                     value={form.obstacles ?? []}
                     onChange={(v) => {
                       set('obstacles', v as FeedbackPayload['obstacles'])
-                      // Reset mainObstacle if the previously selected one is deselected
-                      if (form.mainObstacle && !v.includes(form.mainObstacle)) {
-                        set('mainObstacle', undefined)
-                      }
+                      if (form.mainObstacle && !v.includes(form.mainObstacle)) set('mainObstacle', undefined)
                     }}
                     exclusiveValues={['aucun']}
                   />
                   {form.obstacles?.includes('autre') && (
-                    <TextQuestion
-                      name="obstacleOther"
-                      label="Précisez votre obstacle"
-                      value={form.obstacleOther}
-                      onChange={(v) => set('obstacleOther', v)}
-                      maxLength={500}
-                    />
+                    <TextQuestion name="obstacleOther" label="Précisez votre obstacle" value={form.obstacleOther} onChange={(v) => set('obstacleOther', v)} maxLength={500} />
                   )}
                   {showMainObstacle && (
                     <SingleChoice
                       name="mainObstacle"
                       label="Parmi vos obstacles, lequel est le plus bloquant au quotidien ?"
-                      options={OBSTACLE_OPTIONS.filter(o =>
-                        (selectableObstacles as string[]).includes(o.value)
-                      )}
+                      options={OBSTACLE_OPTIONS.filter(o => (selectableObstacles as string[]).includes(o.value))}
                       value={form.mainObstacle}
                       onChange={(v) => set('mainObstacle', v as FeedbackPayload['mainObstacle'])}
                     />
@@ -267,18 +277,12 @@ export default function SurveyPage() {
                     onChange={(v) => set('improvements', v as FeedbackPayload['improvements'])}
                   />
                   {form.improvements?.includes('autre') && (
-                    <TextQuestion
-                      name="improvementOther"
-                      label="Précisez votre amélioration"
-                      value={form.improvementOther}
-                      onChange={(v) => set('improvementOther', v)}
-                      maxLength={500}
-                    />
+                    <TextQuestion name="improvementOther" label="Précisez votre amélioration" value={form.improvementOther} onChange={(v) => set('improvementOther', v)} maxLength={500} />
                   )}
                 </div>
               )}
 
-              {/* 5 — Usage IA + perception IA */}
+              {/* 5 — Profil IA : usage + mode + outils */}
               {step === 5 && (
                 <div className="flex flex-col gap-xl">
                   <SingleChoice
@@ -286,21 +290,60 @@ export default function SurveyPage() {
                     label="Utilisez-vous des outils d'intelligence artificielle dans votre travail ?"
                     options={AI_USAGE_OPTIONS}
                     value={form.aiUsage}
-                    onChange={(v) => set('aiUsage', v as FeedbackPayload['aiUsage'])}
+                    onChange={(v) => {
+                      set('aiUsage', v as FeedbackPayload['aiUsage'])
+                      // Si l'utilisateur passe à "non", on efface les données usage
+                      if (v === 'non') {
+                        set('aiModes', undefined)
+                        set('aiTools', undefined)
+                      }
+                    }}
                   />
+                  {usesAi && (
+                    <>
+                      <MultiChoice
+                        name="aiModes"
+                        label="Comment utilisez-vous l'IA ? (plusieurs choix possibles)"
+                        options={AI_MODE_OPTIONS}
+                        value={form.aiModes ?? []}
+                        onChange={(v) => set('aiModes', v as FeedbackPayload['aiModes'])}
+                      />
+                      <MultiChoice
+                        name="aiTools"
+                        label="Quels outils utilisez-vous ? (plusieurs choix possibles)"
+                        options={AI_TOOL_OPTIONS}
+                        value={form.aiTools ?? []}
+                        onChange={(v) => set('aiTools', v as FeedbackPayload['aiTools'])}
+                      />
+                    </>
+                  )}
+                </div>
+              )}
+
+              {/* 6 — Regard sur l'IA : perception + appréhensions */}
+              {step === 6 && (
+                <div className="flex flex-col gap-xl">
                   <MultiChoice
                     name="aiPerception"
-                    label="Comment percevez-vous l'IA dans votre métier de développeur ?"
+                    label="Comment percevez-vous l'intelligence artificielle dans votre métier ?"
                     options={AI_PERCEPTION_OPTIONS}
                     value={form.aiPerception ?? []}
                     onChange={(v) => set('aiPerception', v as FeedbackPayload['aiPerception'])}
                     exclusiveValues={['pas_avis']}
                   />
+                  <MultiChoice
+                    name="aiBlockers"
+                    label="Quelles sont vos appréhensions ou blocages vis-à-vis de l'IA ?"
+                    options={AI_BLOCKER_OPTIONS}
+                    value={form.aiBlockers ?? []}
+                    onChange={(v) => set('aiBlockers', v as FeedbackPayload['aiBlockers'])}
+                    exclusiveValues={['aucune']}
+                  />
                 </div>
               )}
 
-              {/* 6 — Suggestion libre */}
-              {step === 6 && (
+              {/* 7 — Suggestion libre */}
+              {step === 7 && (
                 <TextQuestion
                   name="comment"
                   label="Si vous pouviez changer une seule chose au sein du Pôle Développement, laquelle serait-ce ?"
@@ -311,21 +354,18 @@ export default function SurveyPage() {
                 />
               )}
 
-              {/* 7 — eNPS */}
-              {step === 7 && (
+              {/* 8 — eNPS */}
+              {step === 8 && (
                 <div className="flex flex-col gap-md">
                   <p className="font-display font-bold text-primary-dark" style={{ fontSize: '1.125rem', lineHeight: 1.25 }}>
                     Sur une échelle de 0 à 10, quelle est la probabilité que vous recommandiez Synelia comme employeur à un développeur de votre réseau ?
                   </p>
-                  <NpsScale
-                    value={form.enps ?? null}
-                    onChange={(v) => set('enps', v)}
-                  />
+                  <NpsScale value={form.enps ?? null} onChange={(v) => set('enps', v)} />
                 </div>
               )}
 
-              {/* 8 — Intention de rester */}
-              {step === 8 && (
+              {/* 9 — Intention de rester */}
+              {step === 9 && (
                 <div className="flex flex-col gap-lg">
                   <SingleChoice
                     name="retentionIntent"
@@ -334,9 +374,7 @@ export default function SurveyPage() {
                     value={form.retentionIntent}
                     onChange={(v) => set('retentionIntent', v as FeedbackPayload['retentionIntent'])}
                   />
-                  {submitError && (
-                    <Callout variant="error">{submitError}</Callout>
-                  )}
+                  {submitError && <Callout variant="error">{submitError}</Callout>}
                 </div>
               )}
             </div>
@@ -369,17 +407,10 @@ export default function SurveyPage() {
                       <Loader2 className="animate-spin" size={16} aria-hidden="true" />
                       Envoi en cours…
                     </span>
-                  ) : (
-                    'Envoyer mes réponses'
-                  )}
+                  ) : 'Envoyer mes réponses'}
                 </Button>
               ) : (
-                <Button
-                  type="button"
-                  variant="accent"
-                  onClick={() => navigate(step + 1)}
-                  disabled={transitioning}
-                >
+                <Button type="button" variant="accent" onClick={() => navigate(step + 1)} disabled={transitioning}>
                   Suivant
                 </Button>
               )}
@@ -387,7 +418,6 @@ export default function SurveyPage() {
 
           </div>
         </form>
-
       </div>
     </main>
   )

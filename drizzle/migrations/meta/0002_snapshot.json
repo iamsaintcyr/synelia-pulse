@@ -1,0 +1,148 @@
+{
+  "id": "3a2c617f-4618-4f07-908b-54f519bfc2da",
+  "prevId": "5d942017-84b1-446b-aebd-074e8e7c7937",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.feedback_responses": {
+      "name": "feedback_responses",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "submitted_at": {
+          "name": "submitted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "work_context": {
+          "name": "work_context",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "satisfaction_score": {
+          "name": "satisfaction_score",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "satisfaction_trend": {
+          "name": "satisfaction_trend",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "obstacles": {
+          "name": "obstacles",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "obstacle_other": {
+          "name": "obstacle_other",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "main_obstacle": {
+          "name": "main_obstacle",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "improvements": {
+          "name": "improvements",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "improvement_other": {
+          "name": "improvement_other",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ai_usage": {
+          "name": "ai_usage",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ai_modes": {
+          "name": "ai_modes",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ai_tools": {
+          "name": "ai_tools",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ai_perception": {
+          "name": "ai_perception",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ai_blockers": {
+          "name": "ai_blockers",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "enps": {
+          "name": "enps",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "retention_intent": {
+          "name": "retention_intent",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "comment": {
+          "name": "comment",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "additional_comment": {
+          "name": "additional_comment",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

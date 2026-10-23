@@ -12,9 +12,12 @@ export const feedbackResponses = pgTable('feedback_responses', {
   improvements:        text('improvements').array(),
   improvementOther:    text('improvement_other'),
   aiUsage:             varchar('ai_usage', { length: 50 }),
+  aiModes:             text('ai_modes').array(),
+  aiTools:             text('ai_tools').array(),
   aiPerception:        text('ai_perception').array(),
+  aiBlockers:          text('ai_blockers').array(),
   enps:                integer('enps'),
   retentionIntent:     varchar('retention_intent', { length: 50 }),
   comment:             text('comment'),
-  additionalComment:   text('additional_comment'),  // kept for historical data; removed from form
+  additionalComment:   text('additional_comment'),
 })

@@ -15,6 +15,13 @@
       "when": 1792752798016,
       "tag": "0001_past_power_man",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792754465464,
+      "tag": "0002_serious_rawhide_kid",
+      "breakpoints": true
     }
   ]
 }
