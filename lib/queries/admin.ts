@@ -2,6 +2,8 @@ import { db } from '@/lib/db/index'
 import { feedbackResponses } from '@/lib/db/schema'
 import { sql, and, gte, lte, eq, count } from 'drizzle-orm'
 
+export const EXPORT_ROW_LIMIT = 10_000
+
 export type AdminFilters = {
   from?:        Date
   to?:          Date
@@ -156,21 +158,30 @@ export async function getResponses(
   return { data, total }
 }
 
-export async function getExportData(filters: AdminFilters): Promise<ResponseRow[]> {
+export async function getExportData(filters: AdminFilters): Promise<{ rows: ResponseRow[]; truncated: boolean }> {
   const where = buildWhereConditions(filters)
 
   const rows = await db.select().from(feedbackResponses).where(where)
     .orderBy(sql`${feedbackResponses.submittedAt} DESC`)
+    .limit(EXPORT_ROW_LIMIT + 1)
 
-  return rows.map(r => ({
-    id:                r.id,
-    submittedAt:       r.submittedAt.toISOString(),
-    workContext:       r.workContext ?? null,
-    satisfactionScore: r.satisfactionScore ?? null,
-    obstacles:         r.obstacles ?? [],
-    improvements:      r.improvements ?? [],
-    aiPerception:      r.aiPerception ?? [],
-    comment:           r.comment ?? null,
-    additionalComment: r.additionalComment ?? null,
-  }))
+  const truncated = rows.length > EXPORT_ROW_LIMIT
+  const slice = truncated ? rows.slice(0, EXPORT_ROW_LIMIT) : rows
+
+  return {
+    truncated,
+    rows: slice.map(r => ({
+      id:                r.id,
+      submittedAt:       r.submittedAt.toISOString(),
+      workContext:       r.workContext ?? null,
+      satisfactionScore: r.satisfactionScore ?? null,
+      obstacles:         r.obstacles ?? [],
+      improvements:      r.improvements ?? [],
+      aiPerception:      r.aiPerception ?? [],
+      obstacleOther:     r.obstacleOther ?? null,
+      improvementOther:  r.improvementOther ?? null,
+      comment:           r.comment ?? null,
+      additionalComment: r.additionalComment ?? null,
+    })),
+  }
 }

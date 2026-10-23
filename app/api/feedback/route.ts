@@ -1,30 +1,19 @@
 import { NextResponse } from 'next/server'
 import { feedbackSchema } from '@/lib/validations/feedback'
 import { insertFeedback } from '@/lib/queries/feedback'
+import { feedbackLimiter } from '@/lib/rateLimit'
+import { createHash } from 'crypto'
 
-// In-memory rate limiter: max 50 requests per 60-second window.
-// This is intentionally keyed on a single 'global' token — not by IP —
-// to avoid storing any identifying data. Replace with Vercel KV in production
-// for persistence across serverless instances.
-const RATE_LIMIT_WINDOW_MS = 60_000
-const RATE_LIMIT_MAX = 50
-const windowTimestamps: number[] = []
-
-function isRateLimited(): boolean {
-  const now = Date.now()
-  const windowStart = now - RATE_LIMIT_WINDOW_MS
-  while (windowTimestamps.length > 0 && windowTimestamps[0] < windowStart) {
-    windowTimestamps.shift()
-  }
-  if (windowTimestamps.length >= RATE_LIMIT_MAX) {
-    return true
-  }
-  windowTimestamps.push(now)
-  return false
+function clientKey(request: Request): string {
+  // Hash the forwarded IP — never stored in DB, only used as a rate-limit key.
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+           ?? request.headers.get('x-real-ip')
+           ?? 'unknown'
+  return createHash('sha256').update(ip).digest('hex').slice(0, 16)
 }
 
 export async function POST(request: Request) {
-  if (isRateLimited()) {
+  if (!feedbackLimiter(clientKey(request))) {
     return NextResponse.json({ error: 'too_many_requests' }, { status: 429 })
   }
 
