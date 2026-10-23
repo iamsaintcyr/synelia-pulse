@@ -8,6 +8,13 @@
       "when": 1792691485280,
       "tag": "0000_wonderful_doctor_spectrum",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792752798016,
+      "tag": "0001_past_power_man",
+      "breakpoints": true
     }
   ]
 }

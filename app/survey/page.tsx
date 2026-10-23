@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/Button'
 import { Callout } from '@/components/ui/Callout'
 import { RatingScale } from '@/components/survey/RatingScale'
+import { NpsScale } from '@/components/survey/NpsScale'
 import { SingleChoice } from '@/components/survey/SingleChoice'
 import { MultiChoice } from '@/components/survey/MultiChoice'
 import { TextQuestion } from '@/components/survey/TextQuestion'
@@ -18,6 +19,13 @@ const WORK_CONTEXT_OPTIONS = [
   { value: 'teletravail', label: 'En télétravail' },
   { value: 'autre',       label: 'Autre' },
   { value: 'no_answer',   label: 'Je préfère ne pas répondre' },
+]
+
+const SATISFACTION_TREND_OPTIONS = [
+  { value: 'amelioration', label: 'En amélioration' },
+  { value: 'stable',       label: 'Stable' },
+  { value: 'degradation',  label: 'En dégradation' },
+  { value: 'nouveau',      label: 'Je suis arrivé(e) récemment (moins de 6 mois)' },
 ]
 
 const OBSTACLE_OPTIONS = [
@@ -46,18 +54,30 @@ const IMPROVEMENT_OPTIONS = [
   { value: 'autre',                 label: 'Autre' },
 ]
 
+const AI_USAGE_OPTIONS = [
+  { value: 'regulier',    label: 'Oui, régulièrement (plusieurs fois par semaine)' },
+  { value: 'occasionnel', label: 'Oui, occasionnellement (quelques fois par mois)' },
+  { value: 'non',         label: 'Non, je n\'utilise pas d\'outils IA au travail' },
+]
+
 const AI_PERCEPTION_OPTIONS = [
-  { value: 'opportunite',         label: 'Je la considère comme une opportunité pour améliorer ma productivité.' },
-  { value: 'utilise_deja',        label: "J'utilise déjà des outils d'IA dans mon travail." },
-  { value: 'formation_souhaitee', label: "J'aimerais être davantage formé à ces outils." },
+  { value: 'opportunite',         label: 'Je la considère comme une opportunité pour ma productivité.' },
+  { value: 'formation_souhaitee', label: "J'aimerais être davantage formé(e) à ces outils." },
   { value: 'interrogation',       label: "Je m'interroge sur son impact sur mon métier." },
-  { value: 'preoccupation',       label: 'Je suis préoccupé par certains risques ou limites.' },
+  { value: 'preoccupation',       label: 'Je suis préoccupé(e) par certains risques ou limites.' },
   { value: 'pas_avis',            label: "Je n'ai pas encore d'avis." },
+]
+
+const RETENTION_INTENT_OPTIONS = [
+  { value: 'non',       label: 'Non, je compte rester' },
+  { value: 'peut_etre', label: 'Peut-être, cela dépend de l\'évolution' },
+  { value: 'oui',       label: 'Oui, j\'y pense sérieusement' },
+  { value: 'no_answer', label: 'Je préfère ne pas répondre' },
 ]
 
 type FormState = FeedbackPayload & { obstacleOther: string; improvementOther: string }
 
-const TOTAL_STEPS = 7
+const TOTAL_STEPS = 8
 
 export default function SurveyPage() {
   const router = useRouter()
@@ -108,6 +128,11 @@ export default function SurveyPage() {
   const isLast = step === TOTAL_STEPS
   const progress = Math.round((step / TOTAL_STEPS) * 100)
 
+  // Obstacles sélectionnés (hors "aucun") pour la question du principal obstacle
+  const selectableObstacles = (form.obstacles ?? [])
+    .filter(v => v !== 'aucun' && v !== 'autre')
+  const showMainObstacle = selectableObstacles.length >= 2
+
   return (
     <main className="min-h-screen bg-gray-light py-3xl px-md">
       <div className="max-w-[600px] mx-auto flex flex-col gap-xl">
@@ -151,6 +176,7 @@ export default function SurveyPage() {
                 visible ? 'opacity-100' : 'opacity-0',
               )}
             >
+              {/* 1 — Contexte de travail */}
               {step === 1 && (
                 <div className="flex flex-col gap-lg">
                   <Callout variant="info">
@@ -168,22 +194,29 @@ export default function SurveyPage() {
                 </div>
               )}
 
+              {/* 2 — Satisfaction globale + tendance */}
               {step === 2 && (
-                <div className="flex flex-col gap-md">
-                  <p
-                    className="font-display font-bold text-primary-dark"
-                    style={{ fontSize: '1.125rem', lineHeight: 1.25 }}
-                  >
-                    Globalement, comment évaluez-vous votre expérience actuelle au sein du
-                    Pôle Développement ?
-                  </p>
-                  <RatingScale
-                    value={form.satisfactionScore ?? null}
-                    onChange={(v) => set('satisfactionScore', v)}
+                <div className="flex flex-col gap-xl">
+                  <div className="flex flex-col gap-md">
+                    <p className="font-display font-bold text-primary-dark" style={{ fontSize: '1.125rem', lineHeight: 1.25 }}>
+                      Globalement, comment évaluez-vous votre expérience actuelle au sein du Pôle Développement ?
+                    </p>
+                    <RatingScale
+                      value={form.satisfactionScore ?? null}
+                      onChange={(v) => set('satisfactionScore', v)}
+                    />
+                  </div>
+                  <SingleChoice
+                    name="satisfactionTrend"
+                    label="Par rapport à il y a 6 mois, votre situation est :"
+                    options={SATISFACTION_TREND_OPTIONS}
+                    value={form.satisfactionTrend}
+                    onChange={(v) => set('satisfactionTrend', v as FeedbackPayload['satisfactionTrend'])}
                   />
                 </div>
               )}
 
+              {/* 3 — Obstacles + principal obstacle */}
               {step === 3 && (
                 <div className="flex flex-col gap-lg">
                   <MultiChoice
@@ -191,7 +224,13 @@ export default function SurveyPage() {
                     label="Quels sont les principaux obstacles que vous rencontrez actuellement dans votre travail ?"
                     options={OBSTACLE_OPTIONS}
                     value={form.obstacles ?? []}
-                    onChange={(v) => set('obstacles', v as FeedbackPayload['obstacles'])}
+                    onChange={(v) => {
+                      set('obstacles', v as FeedbackPayload['obstacles'])
+                      // Reset mainObstacle if the previously selected one is deselected
+                      if (form.mainObstacle && !v.includes(form.mainObstacle)) {
+                        set('mainObstacle', undefined)
+                      }
+                    }}
                     exclusiveValues={['aucun']}
                   />
                   {form.obstacles?.includes('autre') && (
@@ -203,9 +242,21 @@ export default function SurveyPage() {
                       maxLength={500}
                     />
                   )}
+                  {showMainObstacle && (
+                    <SingleChoice
+                      name="mainObstacle"
+                      label="Parmi vos obstacles, lequel est le plus bloquant au quotidien ?"
+                      options={OBSTACLE_OPTIONS.filter(o =>
+                        (selectableObstacles as string[]).includes(o.value)
+                      )}
+                      value={form.mainObstacle}
+                      onChange={(v) => set('mainObstacle', v as FeedbackPayload['mainObstacle'])}
+                    />
+                  )}
                 </div>
               )}
 
+              {/* 4 — Améliorations */}
               {step === 4 && (
                 <div className="flex flex-col gap-lg">
                   <MultiChoice
@@ -227,17 +278,28 @@ export default function SurveyPage() {
                 </div>
               )}
 
+              {/* 5 — Usage IA + perception IA */}
               {step === 5 && (
-                <MultiChoice
-                  name="aiPerception"
-                  label="Comment percevez-vous l'utilisation de l'intelligence artificielle dans votre travail de développeur ?"
-                  options={AI_PERCEPTION_OPTIONS}
-                  value={form.aiPerception ?? []}
-                  onChange={(v) => set('aiPerception', v as FeedbackPayload['aiPerception'])}
-                  exclusiveValues={['pas_avis']}
-                />
+                <div className="flex flex-col gap-xl">
+                  <SingleChoice
+                    name="aiUsage"
+                    label="Utilisez-vous des outils d'intelligence artificielle dans votre travail ?"
+                    options={AI_USAGE_OPTIONS}
+                    value={form.aiUsage}
+                    onChange={(v) => set('aiUsage', v as FeedbackPayload['aiUsage'])}
+                  />
+                  <MultiChoice
+                    name="aiPerception"
+                    label="Comment percevez-vous l'IA dans votre métier de développeur ?"
+                    options={AI_PERCEPTION_OPTIONS}
+                    value={form.aiPerception ?? []}
+                    onChange={(v) => set('aiPerception', v as FeedbackPayload['aiPerception'])}
+                    exclusiveValues={['pas_avis']}
+                  />
+                </div>
               )}
 
+              {/* 6 — Suggestion libre */}
               {step === 6 && (
                 <TextQuestion
                   name="comment"
@@ -249,15 +311,28 @@ export default function SurveyPage() {
                 />
               )}
 
+              {/* 7 — eNPS */}
               {step === 7 && (
+                <div className="flex flex-col gap-md">
+                  <p className="font-display font-bold text-primary-dark" style={{ fontSize: '1.125rem', lineHeight: 1.25 }}>
+                    Sur une échelle de 0 à 10, quelle est la probabilité que vous recommandiez Synelia comme employeur à un développeur de votre réseau ?
+                  </p>
+                  <NpsScale
+                    value={form.enps ?? null}
+                    onChange={(v) => set('enps', v)}
+                  />
+                </div>
+              )}
+
+              {/* 8 — Intention de rester */}
+              {step === 8 && (
                 <div className="flex flex-col gap-lg">
-                  <TextQuestion
-                    name="additionalComment"
-                    label="Souhaitez-vous ajouter un autre commentaire ou une suggestion ?"
-                    value={form.additionalComment ?? ''}
-                    onChange={(v) => set('additionalComment', v)}
-                    hint="Cette question est facultative."
-                    maxLength={2000}
+                  <SingleChoice
+                    name="retentionIntent"
+                    label="Envisagez-vous de quitter Synelia dans les 12 prochains mois ?"
+                    options={RETENTION_INTENT_OPTIONS}
+                    value={form.retentionIntent}
+                    onChange={(v) => set('retentionIntent', v as FeedbackPayload['retentionIntent'])}
                   />
                   {submitError && (
                     <Callout variant="error">{submitError}</Callout>
