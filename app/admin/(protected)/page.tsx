@@ -98,14 +98,14 @@ export default async function AdminDashboard({ searchParams }: PageProps) {
           {/* Charts row 1 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-md">
             <section className="bg-white border border-border rounded-lg shadow-sm p-lg">
-              <h2 className="font-display font-bold text-primary-dark text-base mb-md">
+              <h2 className="font-display font-bold text-primary-dark text-[1.125rem] leading-[1.25] mb-md">
                 Distribution de la satisfaction
               </h2>
               <SatisfactionDistChart data={summary.satisfactionDistribution} />
             </section>
 
             <section className="bg-white border border-border rounded-lg shadow-sm p-lg">
-              <h2 className="font-display font-bold text-primary-dark text-base mb-md">
+              <h2 className="font-display font-bold text-primary-dark text-[1.125rem] leading-[1.25] mb-md">
                 Réponses au fil du temps (90 jours)
               </h2>
               {summary.responsesByDay.length > 0
@@ -118,7 +118,7 @@ export default async function AdminDashboard({ searchParams }: PageProps) {
           {/* Charts row 2 */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-md">
             <section className="bg-white border border-border rounded-lg shadow-sm p-lg">
-              <h2 className="font-display font-bold text-primary-dark text-base mb-md">
+              <h2 className="font-display font-bold text-primary-dark text-[1.125rem] leading-[1.25] mb-md">
                 Principaux obstacles
               </h2>
               {Object.keys(summary.obstaclesCounts).length > 0
@@ -128,7 +128,7 @@ export default async function AdminDashboard({ searchParams }: PageProps) {
             </section>
 
             <section className="bg-white border border-border rounded-lg shadow-sm p-lg">
-              <h2 className="font-display font-bold text-primary-dark text-base mb-md">
+              <h2 className="font-display font-bold text-primary-dark text-[1.125rem] leading-[1.25] mb-md">
                 Améliorations souhaitées
               </h2>
               {Object.keys(summary.improvementsCounts).length > 0

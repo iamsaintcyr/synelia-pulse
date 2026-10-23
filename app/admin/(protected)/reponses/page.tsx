@@ -38,13 +38,13 @@ export default async function ReponsesPage({ searchParams }: PageProps) {
         <div className="flex gap-sm">
           <a
             href={csvHref}
-            className="inline-flex items-center px-4 py-2 text-sm font-display font-bold rounded-md border-2 border-primary text-primary-dark bg-white hover:bg-primary-mist transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+            className="inline-flex items-center px-4 py-2 text-[0.9375rem] font-display font-bold rounded-md border-2 border-primary text-primary-dark bg-white hover:bg-primary-mist transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
             Exporter CSV
           </a>
           <a
             href={xlsxHref}
-            className="inline-flex items-center px-4 py-2 text-sm font-display font-bold rounded-md border-2 border-primary text-primary-dark bg-white hover:bg-primary-mist transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+            className="inline-flex items-center px-4 py-2 text-[0.9375rem] font-display font-bold rounded-md border-2 border-primary text-primary-dark bg-white hover:bg-primary-mist transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
           >
             Exporter Excel
           </a>

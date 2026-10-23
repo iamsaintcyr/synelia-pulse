@@ -24,7 +24,7 @@ interface KpiCardProps {
 
 export function KpiCard({ label, value, sub, accented, className }: KpiCardProps) {
   return (
-    <Card className={cn(accented && 'border-t-4 border-t-accent', className)}>
+    <Card className={cn(accented && 'border-t-[3px] border-t-accent', className)}>
       <p className="text-sm text-gray-text mb-sm">{label}</p>
       <p className="font-display font-bold text-3xl text-ink">{value}</p>
       {sub && <p className="text-sm text-gray-text mt-xs">{sub}</p>}

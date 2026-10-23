@@ -1,13 +1,7 @@
 import { redirect } from 'next/navigation'
 import { auth, signOut } from '@/lib/auth'
-import Image from 'next/image'
-import Link from 'next/link'
-import { LayoutDashboard, List, LogOut } from 'lucide-react'
-
-const NAV_LINKS = [
-  { href: '/admin',          label: 'Tableau de bord', icon: LayoutDashboard },
-  { href: '/admin/reponses', label: 'Réponses',         icon: List             },
-]
+import { LogOut } from 'lucide-react'
+import { SidebarNav } from '@/components/admin/SidebarNav'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
@@ -17,32 +11,15 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     <div className="min-h-screen flex">
       {/* Sidebar */}
       <aside className="w-64 bg-primary-night flex flex-col shrink-0">
-        <div className="px-lg py-xl flex flex-col gap-sm">
-          <Image
-            src="/logo-blanc.png"
-            alt="Synelia"
-            width={130}
-            height={38}
-            className="h-8 w-auto"
-            priority
-          />
-          <p className="font-display font-bold text-white/70 text-sm leading-tight">
+        <div className="px-lg py-xl flex flex-col gap-xs">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-blanc.png" alt="Synelia" className="h-8 w-auto self-start" />
+          <p className="font-body text-white/60 text-[0.75rem] leading-tight tracking-wide uppercase">
             Pôle Développement
           </p>
         </div>
 
-        <nav className="flex flex-col px-sm flex-1" aria-label="Navigation administration">
-          {NAV_LINKS.map(({ href, label, icon: Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              className="flex items-center gap-sm px-md py-[10px] rounded-md text-white text-sm font-display font-bold transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-            >
-              <Icon size={18} aria-hidden="true" />
-              {label}
-            </Link>
-          ))}
-        </nav>
+        <SidebarNav />
 
         <div className="px-sm pb-lg">
           <form
